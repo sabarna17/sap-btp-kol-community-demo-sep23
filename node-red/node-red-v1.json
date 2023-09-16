@@ -1,0 +1,503 @@
+[
+    {
+        "id": "c2720ecc4023179c",
+        "type": "inject",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 100,
+        "wires": [
+            [
+                "00935202fd43af90"
+            ]
+        ]
+    },
+    {
+        "id": "eec38028baea2ed5",
+        "type": "http in",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "url": "/check_unread_email",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 140,
+        "wires": [
+            [
+                "00935202fd43af90"
+            ]
+        ]
+    },
+    {
+        "id": "bb8eedc75260ce50",
+        "type": "function",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "func": "var customerpo = 0;\nvar lowsubject = msg.topic.toLowerCase();\nvar indexs = 0;\n\nmsg.lowsubject = lowsubject;\n\nindexs = lowsubject.search(\"purchase\");\n\nif(indexs >= 0){\n    customerpo = 1;\n}\n\nif((customerpo) && (msg.attachments.length)){\n    var filename = msg.attachments[0].filename;\n    var filecontent = msg.attachments[0].content;\n}\nmsg.indexs = indexs;\nmsg.customerpo = customerpo;\nmsg.filecontent = filecontent;\nmsg.filename = filename;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 100,
+        "wires": [
+            [
+                "5a6b26a4c84fecb0"
+            ]
+        ]
+    },
+    {
+        "id": "7b1fd4e9f4e4606d",
+        "type": "file",
+        "z": "f83b5859ea2f283c",
+        "name": "SaveFile",
+        "filename": "fullfile",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 640,
+        "y": 220,
+        "wires": [
+            [
+                "6ac32548c0570c58"
+            ]
+        ]
+    },
+    {
+        "id": "5a6b26a4c84fecb0",
+        "type": "switch",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "property": "customerpo",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "neq",
+                "v": "1",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 290,
+        "y": 260,
+        "wires": [
+            [
+                "b3c5fadf20adb811"
+            ],
+            [
+                "2d26c06a85b07464"
+            ]
+        ]
+    },
+    {
+        "id": "2d26c06a85b07464",
+        "type": "function",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "func": "// msg = {};\nmsg.payload = \"This is not a Customer PO Email\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 340,
+        "wires": [
+            [
+                "0e85aea13071bfd3"
+            ]
+        ]
+    },
+    {
+        "id": "b3c5fadf20adb811",
+        "type": "function",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "func": "var filepath = './';\nmsg.fullfile = filepath + msg.filename;\nmsg.payload = msg.filecontent;\nmsg.topic = msg.topic;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 220,
+        "wires": [
+            [
+                "7b1fd4e9f4e4606d",
+                "8afd2842be43d203"
+            ]
+        ]
+    },
+    {
+        "id": "8afd2842be43d203",
+        "type": "debug",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "filename",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 490,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "6ac32548c0570c58",
+        "type": "file in",
+        "z": "f83b5859ea2f283c",
+        "name": "Read PDF File",
+        "filename": "fullfile",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "x": 820,
+        "y": 220,
+        "wires": [
+            [
+                "67920d1377aa0ebf"
+            ]
+        ]
+    },
+    {
+        "id": "0e85aea13071bfd3",
+        "type": "http response",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 950,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "00935202fd43af90",
+        "type": "e-mail in",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "protocol": "IMAP",
+        "server": "imap.gmail.com",
+        "useSSL": true,
+        "autotls": "never",
+        "port": "993",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "box": "INBOX",
+        "disposition": "Read",
+        "criteria": "UNSEEN",
+        "repeat": "300",
+        "fetch": "trigger",
+        "inputs": 1,
+        "x": 370,
+        "y": 100,
+        "wires": [
+            [
+                "bb8eedc75260ce50"
+            ]
+        ]
+    },
+    {
+        "id": "67920d1377aa0ebf",
+        "type": "function",
+        "z": "f83b5859ea2f283c",
+        "name": "Create multipart/form-data",
+        "func": "msg.headers = {\n    \"content-type\": \"multipart/form-data\",\n    \"x-api-key\":\"sec_777Xibue1OqnClJ8OT7qI8y71hwWvbpX\"\n}\n\nmsg.payload = {\n    \"file\": {\n        \"value\": msg.payload, //file buffer\n        \"options\": {\n            \"filename\": msg.filename\n        }\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 280,
+        "wires": [
+            [
+                "12ddaae48faf1a63"
+            ]
+        ]
+    },
+    {
+        "id": "12ddaae48faf1a63",
+        "type": "http request",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.chatpdf.com/v1/sources/add-file",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 970,
+        "y": 280,
+        "wires": [
+            [
+                "0e85aea13071bfd3"
+            ]
+        ]
+    },
+    {
+        "id": "ff34e899.fef6f8",
+        "type": "http in",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "url": "/get_pdf_data",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 270,
+        "y": 500,
+        "wires": [
+            [
+                "b8cdd9c2.499c28"
+            ]
+        ]
+    },
+    {
+        "id": "fb64026a.ca37e",
+        "type": "http request",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.chatpdf.com/v1/chats/message",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 590,
+        "y": 500,
+        "wires": [
+            [
+                "7de7745e.dcd35c"
+            ]
+        ]
+    },
+    {
+        "id": "b8cdd9c2.499c28",
+        "type": "function",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "func": "\nmsg.headers = {\n    \"x-api-key\":\"sec_777Xibue1OqnClJ8OT7qI8y71hwWvbpX\"\n}\n\nmsg.payload = {\n  \"sourceId\": msg.req.query.sourceId,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Fill the below json, with values from the document. Also wrap json code output in <code></code>, without json beautifying - >\" +\n                 \"{ \\\"purchaseOrder\\\" : \\\"\\\", \"+\n                 \" \\\"purchaseOrderDate\\\" : \\\"\\\"\" +\n                 \" \\\"supplierDetails\\\": {\\\"name\\\": \\\"\\\",\\\"mobile\\\": \\\"\\\", \\\"email\\\": \\\"\\\", \\\"address\\\": \\\"\\\" },\" +\n                 \" \\\"billToDetails\\\"  : {\\\"name\\\": \\\"\\\",\\\"mobile\\\": \\\"\\\", \\\"email\\\": \\\"\\\", \\\"address\\\": \\\"\\\" },\" + \n                 \" \\\"paymentTerms\\\"   : \\\"\\\",\" + \n                 \" \\\"itemDetails\\\": [{\\\"quantity\\\": \\\"\\\",\\\"materialNumber\\\": \\\"\\\", \\\"unitPrice\\\":\\\"\\\", \\\"amount\\\": \\\"\\\"},\\\"materialDescription\\\":\\\"\\\"] }\"\n    }\n  ]\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 500,
+        "wires": [
+            [
+                "fb64026a.ca37e"
+            ]
+        ]
+    },
+    {
+        "id": "d4923553.9d75e8",
+        "type": "debug",
+        "z": "f83b5859ea2f283c",
+        "name": "Full MSG",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "6164584c.1a40f8",
+        "type": "http response",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "x": 1010,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "32139007.fca29",
+        "type": "http in",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "url": "/delete_pdf_file",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 270,
+        "y": 620,
+        "wires": [
+            [
+                "df650c.ca8a7af8"
+            ]
+        ]
+    },
+    {
+        "id": "df650c.ca8a7af8",
+        "type": "function",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "func": "msg.headers = {\n    \"x-api-key\":\"sec_777Xibue1OqnClJ8OT7qI8y71hwWvbpX\"\n}\n\nmsg.payload = { \"sources\": [msg.req.query.sourceId] }\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 620,
+        "wires": [
+            [
+                "b2b4f9c0.201078"
+            ]
+        ]
+    },
+    {
+        "id": "50bbadfe.c634d4",
+        "type": "debug",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "b2b4f9c0.201078",
+        "type": "http request",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.chatpdf.com/v1/sources/delete",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 640,
+        "y": 620,
+        "wires": [
+            [
+                "50bbadfe.c634d4",
+                "3afceb49.b97984"
+            ]
+        ]
+    },
+    {
+        "id": "3afceb49.b97984",
+        "type": "http response",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 820,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "7de7745e.dcd35c",
+        "type": "function",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "func": "var mystring = msg.payload.content.toString();\nvar fromvalue = mystring.split(\"<code>\");\nvar tovalue = fromvalue[1].split(\"</code>\");\nmsg.payload = tovalue[0];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 500,
+        "wires": [
+            [
+                "e18c8e671b45c3e9",
+                "d4923553.9d75e8"
+            ]
+        ]
+    },
+    {
+        "id": "e18c8e671b45c3e9",
+        "type": "json",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 870,
+        "y": 540,
+        "wires": [
+            [
+                "6164584c.1a40f8",
+                "d4923553.9d75e8"
+            ]
+        ]
+    },
+    {
+        "id": "2608b4d8e2985ab6",
+        "type": "simple-chatgpt",
+        "z": "f83b5859ea2f283c",
+        "name": "",
+        "Token": "",
+        "Model": "",
+        "SystemSetting": "",
+        "functions": "",
+        "functionsType": "str",
+        "function_call": "auto",
+        "function_callType": "str",
+        "x": 400,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    }
+]

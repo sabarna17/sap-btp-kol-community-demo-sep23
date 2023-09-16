@@ -1,20 +1,15 @@
 # sap-btp-kol-community-demo-sep23
-Demo in SAP BTP environments
-1. RAP Developments
-2. CAP Developments - Cloud Foundry
-3. CAP 
-1. In this tutorial, we are going to cover integration.
 
+## Difficulty: Beginners
 
-Difficulty: Beginners
+## Demo in SAP BTP environments
+1. SAP BTP Overview
+2. SAP AI Business Services
+3. SAP RPA Task Automation
+4. Deploying adapters and middleware 
 
 ## Target Audience
-1. Understanding the basic coding of SAP, ABAP, RAP, BTP, and Node-JS
-2. Basic understanding of SAP and BTP
-4. BTP trial account
-
-## Content
-1. Creation of ABAP-on-Cloud 
-2. Creation of a basic RAP application with CDS, ODATA 
-3. 
+1. Basic Understanding of SAP, BTP, and Node-JS
+2. Architectural overview
+ 
 

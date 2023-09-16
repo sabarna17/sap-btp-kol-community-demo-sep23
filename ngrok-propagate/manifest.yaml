@@ -1,7 +1,6 @@
 applications:
   - name: ngrok-propagate
     random-route: false
-    route: sabarna17
     path: ./
     buidpack: https://github.com/cloudfoundry/nodejs-buidpack
     host: ngrok-propagate

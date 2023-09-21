@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-09-21T21:35:59.417Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="HxxfixVLX-P8F4_eerbL" version="21.8.0" type="github">
+<mxfile host="app.diagrams.net" modified="2023-09-21T21:37:06.605Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="057-wyQUFKYXwV7lgjlx" version="21.8.0" type="github">
   <diagram name="Page-1" id="6_2n3fAXV3BffSLL0dP4">
     <mxGraphModel dx="1050" dy="591" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -212,9 +212,6 @@
             <mxPoint x="370" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="IPrCYm6E3xCLuTnceemR-58" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;Secure Tunnel&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" vertex="1" parent="1">
-          <mxGeometry x="450" y="466" width="64.41" height="25" as="geometry" />
-        </mxCell>
         <mxCell id="IPrCYm6E3xCLuTnceemR-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.593;entryY=0.003;entryDx=0;entryDy=0;entryPerimeter=0;strokeWidth=2;flowAnimation=1;" edge="1" parent="1" source="IPrCYm6E3xCLuTnceemR-44" target="HBNp4rY9nTRqI35zbJ0y-6">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -249,7 +246,10 @@
           <mxGeometry x="405" y="448" width="20" height="20" as="geometry" />
         </mxCell>
         <mxCell id="IPrCYm6E3xCLuTnceemR-71" value="5" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=2;fontFamily=Tahoma;spacingBottom=4;spacingRight=2;strokeColor=#0e8088;fontStyle=1;fillColor=#b0e3e6;" vertex="1" parent="1">
-          <mxGeometry x="242" y="297" width="20" height="20" as="geometry" />
+          <mxGeometry x="74" y="170" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IPrCYm6E3xCLuTnceemR-72" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 9px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;Secure Tunnel (&lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 9px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;&lt;b&gt;SCC)&lt;/b&gt;&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="468" width="90" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -1,0 +1,83 @@
+[
+    {
+        "id": "e879cdd525df7988",
+        "type": "http in",
+        "z": "869500685a277911",
+        "name": "",
+        "url": "/dummy_sales_order",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 660,
+        "wires": [
+            [
+                "ca568fb803fddae7"
+            ]
+        ]
+    },
+    {
+        "id": "d5131b3b38916466",
+        "type": "function",
+        "z": "869500685a277911",
+        "name": "",
+        "func": "msg.payload = {\n    \"so\": msg.payload\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 660,
+        "wires": [
+            [
+                "989bc2f8996184e5",
+                "6c1af9ab294c1f97"
+            ]
+        ]
+    },
+    {
+        "id": "989bc2f8996184e5",
+        "type": "http response",
+        "z": "869500685a277911",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 770,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "6c1af9ab294c1f97",
+        "type": "debug",
+        "z": "869500685a277911",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "ca568fb803fddae7",
+        "type": "random",
+        "z": "869500685a277911",
+        "name": "",
+        "low": "4000000000",
+        "high": "4999999999",
+        "inte": "true",
+        "property": "payload",
+        "x": 360,
+        "y": 660,
+        "wires": [
+            [
+                "d5131b3b38916466"
+            ]
+        ]
+    }
+]

@@ -1,0 +1,128 @@
+[
+    {
+        "id": "384820cc81fbf22c",
+        "type": "http in",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "url": "/get_pdf_data",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "b48f6b7deadfcd80"
+            ]
+        ]
+    },
+    {
+        "id": "29f9667aed7e9591",
+        "type": "http request",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.chatpdf.com/v1/chats/message",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 470,
+        "y": 500,
+        "wires": [
+            [
+                "efa6747b89a08c82"
+            ]
+        ]
+    },
+    {
+        "id": "b48f6b7deadfcd80",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "func": "\nmsg.headers = {\n    \"x-api-key\":\"sec_XXXX\"\n}\n\nmsg.payload = {\n  \"sourceId\": msg.req.query.sourceId,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Fill the below json, with values from the document. Also wrap json code output in <code></code>, without json beautifying - >\" +\n                 \"{ \\\"purchaseOrder\\\" : \\\"\\\", \"+\n                 \" \\\"purchaseOrderDate\\\" : \\\"\\\"\" +\n                 \" \\\"supplierDetails\\\": {\\\"name\\\": \\\"\\\",\\\"mobile\\\": \\\"\\\", \\\"email\\\": \\\"\\\", \\\"address\\\": \\\"\\\" },\" +\n                 \" \\\"billToDetails\\\"  : {\\\"name\\\": \\\"\\\",\\\"mobile\\\": \\\"\\\", \\\"email\\\": \\\"\\\", \\\"address\\\": \\\"\\\" },\" + \n                 \" \\\"paymentTerms\\\"   : \\\"\\\",\" + \n                 \" \\\"itemDetails\\\": [{\\\"quantity\\\": \\\"\\\",\\\"materialNumber\\\": \\\"\\\", \\\"unitPrice\\\":\\\"\\\", \\\"amount\\\": \\\"\\\"},\\\"materialDescription\\\":\\\"\\\"] }\"\n    }\n  ]\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 500,
+        "wires": [
+            [
+                "29f9667aed7e9591"
+            ]
+        ]
+    },
+    {
+        "id": "2e966cd864fd5c33",
+        "type": "debug",
+        "z": "d5aaac432cf1e729",
+        "name": "Full MSG",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "d65056f4c5340aeb",
+        "type": "http response",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "x": 870,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "efa6747b89a08c82",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "func": "var mystring = msg.payload.content.toString();\nvar fromvalue = mystring.split(\"<code>\");\nvar tovalue = fromvalue[1].split(\"</code>\");\nmsg.payload = tovalue[0];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 500,
+        "wires": [
+            [
+                "2e966cd864fd5c33",
+                "3b524b79c13af6ce"
+            ]
+        ]
+    },
+    {
+        "id": "3b524b79c13af6ce",
+        "type": "json",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 750,
+        "y": 520,
+        "wires": [
+            [
+                "d65056f4c5340aeb"
+            ]
+        ]
+    }
+]

@@ -1,0 +1,88 @@
+[
+    {
+        "id": "ad99ce7ebbc89117",
+        "type": "http in",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "url": "/delete_pdf_file",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 720,
+        "wires": [
+            [
+                "650fed29598b9014"
+            ]
+        ]
+    },
+    {
+        "id": "650fed29598b9014",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "func": "msg.headers = {\n    \"x-api-key\":\"sec_XXXX\"\n}\n\nmsg.payload = { \"sources\": [msg.req.query.sourceId] }\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 720,
+        "wires": [
+            [
+                "b37c9624f6a21a83"
+            ]
+        ]
+    },
+    {
+        "id": "d60c32a5fd68fc43",
+        "type": "debug",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "b37c9624f6a21a83",
+        "type": "http request",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.chatpdf.com/v1/sources/delete",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 520,
+        "y": 720,
+        "wires": [
+            [
+                "d60c32a5fd68fc43",
+                "4327667f1a881bef"
+            ]
+        ]
+    },
+    {
+        "id": "4327667f1a881bef",
+        "type": "http response",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 700,
+        "y": 720,
+        "wires": []
+    }
+]

@@ -1,0 +1,135 @@
+[
+    {
+        "id": "2afbb9e5dc416b11",
+        "type": "e-mail",
+        "z": "d5aaac432cf1e729",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "",
+        "dname": "",
+        "x": 770,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "88828d78b6bcd388",
+        "type": "inject",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 900,
+        "wires": [
+            [
+                "1edf638aaf3a5490"
+            ]
+        ]
+    },
+    {
+        "id": "203d302e7f8bcf0b",
+        "type": "http in",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "url": "/send_email",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 960,
+        "wires": [
+            [
+                "1edf638aaf3a5490"
+            ]
+        ]
+    },
+    {
+        "id": "1edf638aaf3a5490",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "func": "// msg.headers = {\n//     \"x-api-key\":\"sec_777Xibue1OqnClJ8OT7qI8y71hwWvbpX\"\n// }\nvar emailto = msg.req.query.emailto;\nvar so = msg.req.query.so;\n\nmsg.to = emailto; // Send TO Email ID\nmsg.so = so; // Sales Order for Customer Reference\nmsg.payload = 'We have Created Sales Order number: ' \n            + so \n            + 'Starting with Hi Team, ' \n            + 'Ending with: ' + 'Regards, sabarnapass@gmail.com'\n            + 'If delay happens from our side. We will inform you'\nmsg.topic = 'Your Reference Sales Order:' + so;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 920,
+        "wires": [
+            [
+                "0fafc84c0a6e7d78"
+            ]
+        ]
+    },
+    {
+        "id": "e54e773e9ceaf50f",
+        "type": "http response",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 810,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "4dafe541f6954c61",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "Set HTTP body",
+        "func": "msg.payload = {\n    'msg': 'Email Sent: ' + msg.to\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 1020,
+        "wires": [
+            [
+                "e54e773e9ceaf50f"
+            ]
+        ]
+    },
+    {
+        "id": "0fafc84c0a6e7d78",
+        "type": "simple-chatgpt",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "Token": "sk-YjNP6mLwJj",
+        "Model": "",
+        "SystemSetting": "Create a email body without any variables and within 100 lines.",
+        "functions": "",
+        "functionsType": "str",
+        "function_call": "auto",
+        "function_callType": "str",
+        "x": 540,
+        "y": 920,
+        "wires": [
+            [
+                "2afbb9e5dc416b11",
+                "4dafe541f6954c61"
+            ]
+        ]
+    }
+]

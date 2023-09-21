@@ -1,0 +1,317 @@
+[
+    {
+        "id": "75f3cb9d23014bb6",
+        "type": "inject",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 100,
+        "wires": [
+            [
+                "3304689b89b4c7c2"
+            ]
+        ]
+    },
+    {
+        "id": "3b92fd63d8fb6f26",
+        "type": "http in",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "url": "/check_unread_email",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 140,
+        "wires": [
+            [
+                "3304689b89b4c7c2"
+            ]
+        ]
+    },
+    {
+        "id": "1d4ec0a780158e85",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "func": "var customerpo = 0;\nvar lowsubject = msg.topic.toLowerCase();\nvar indexs = 0;\n\nmsg.lowsubject = lowsubject;\n\nindexs = lowsubject.search(\"purchase\");\n\nif(indexs >= 0){\n    customerpo = 1;\n}\n\nif((customerpo) && (msg.attachments.length)){\n    var filename = msg.attachments[0].filename;\n    var filecontent = msg.attachments[0].content;\n}\nmsg.indexs = indexs;\nmsg.customerpo = customerpo;\nmsg.filecontent = filecontent;\nmsg.filename = filename;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 120,
+        "wires": [
+            [
+                "b8e094438334d0cc"
+            ]
+        ]
+    },
+    {
+        "id": "f31b9816b307b4b9",
+        "type": "file",
+        "z": "d5aaac432cf1e729",
+        "name": "SaveFile",
+        "filename": "fullfile",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 700,
+        "y": 180,
+        "wires": [
+            [
+                "19b02d7e62ebcee8"
+            ]
+        ]
+    },
+    {
+        "id": "b8e094438334d0cc",
+        "type": "switch",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "property": "customerpo",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "neq",
+                "v": "1",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 390,
+        "y": 180,
+        "wires": [
+            [
+                "ced2ce67d3d9b0ea"
+            ],
+            [
+                "2a11c5e32de98988"
+            ]
+        ]
+    },
+    {
+        "id": "2a11c5e32de98988",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "func": "// msg = {};\nmsg.payload = \"This is not a Customer PO Email\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 340,
+        "wires": [
+            [
+                "84587400cc987f1f"
+            ]
+        ]
+    },
+    {
+        "id": "ced2ce67d3d9b0ea",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "func": "var filepath = './';\nmsg.fullfile = filepath + msg.filename;\nmsg.payload = msg.filecontent;\nmsg.topic = msg.topic;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 180,
+        "wires": [
+            [
+                "f31b9816b307b4b9"
+            ]
+        ]
+    },
+    {
+        "id": "111477ea6caac61d",
+        "type": "debug",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "19b02d7e62ebcee8",
+        "type": "file in",
+        "z": "d5aaac432cf1e729",
+        "name": "Read PDF File",
+        "filename": "fullfile",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "x": 880,
+        "y": 180,
+        "wires": [
+            [
+                "4c10974c03e04a75"
+            ]
+        ]
+    },
+    {
+        "id": "84587400cc987f1f",
+        "type": "http response",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 1050,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "3304689b89b4c7c2",
+        "type": "e-mail in",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "protocol": "IMAP",
+        "server": "imap.gmail.com",
+        "useSSL": true,
+        "autotls": "never",
+        "port": "993",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "box": "INBOX",
+        "disposition": "Read",
+        "criteria": "UNSEEN",
+        "repeat": "300",
+        "fetch": "trigger",
+        "inputs": 1,
+        "credentials": {
+            "userid": "",
+            "password": ""
+        },
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "1d4ec0a780158e85",
+                "12ec730abaa6a9d6"
+            ]
+        ]
+    },
+    {
+        "id": "4c10974c03e04a75",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "Create multipart/form-data",
+        "func": "msg.headers = {\n    \"content-type\": \"multipart/form-data\",\n    \"x-api-key\":\"sec_XXXXXX\"\n}\n\nmsg.payload = {\n    \"file\": {\n        \"value\": msg.payload, //file buffer\n        \"options\": {\n            \"filename\": msg.filename\n        }\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 240,
+        "wires": [
+            [
+                "93cd31dd8cab1470"
+            ]
+        ]
+    },
+    {
+        "id": "93cd31dd8cab1470",
+        "type": "http request",
+        "z": "d5aaac432cf1e729",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.chatpdf.com/v1/sources/add-file",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 850,
+        "y": 240,
+        "wires": [
+            [
+                "7f69e70d1fc82c15"
+            ]
+        ]
+    },
+    {
+        "id": "12ec730abaa6a9d6",
+        "type": "debug",
+        "z": "d5aaac432cf1e729",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "7f69e70d1fc82c15",
+        "type": "function",
+        "z": "d5aaac432cf1e729",
+        "name": "Set Output",
+        "func": "var payload = {}\n\npayload = {\n    \"sourceId\": msg.payload.sourceId,\n    \"from\": msg.header.from.value[0].address\n}\n// msg = {};\nmsg.payload = payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 280,
+        "wires": [
+            [
+                "84587400cc987f1f",
+                "111477ea6caac61d"
+            ]
+        ]
+    }
+]

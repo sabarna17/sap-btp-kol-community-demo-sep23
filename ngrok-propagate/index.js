@@ -25,7 +25,7 @@ if (!ngrokhost) {
 
 var port = process.env['INTERNAL_PORT'];
 if (!port) {
-    port = 3000;
+    port = 8080;
 }
 
 var ngrok = async function (url, header, body) {
